@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Roger Lamb</title>
+  <meta name="description" content="Roger Lamb's personal homepage">
+  <meta name="theme-color" content="#0a0c16">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0a0c16;
+      --card: rgba(255, 255, 255, 0.035);
+      --card-hover: rgba(255, 255, 255, 0.06);
+      --text: #e8eaf2;
+      --muted: #9097ad;
+      --accent: #5eead4;
+      --accent-2: #a78bfa;
+      --border: rgba(255, 255, 255, 0.08);
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+      --display: "Space Grotesk", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font: 16px/1.65 Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(900px 600px at 10% -10%, rgba(167, 139, 250, 0.16), transparent 60%),
+        radial-gradient(800px 600px at 110% 30%, rgba(94, 234, 212, 0.10), transparent 60%),
+        radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 24px 24px,
+        var(--bg);
+      background-attachment: fixed;
+    }
+    ::selection { background: rgba(94, 234, 212, 0.3); }
+    main { max-width: 760px; margin: 0 auto; padding: 96px 16px 64px; counter-reset: section; }
+    h1, h2, h3 { font-family: var(--display); }
+    h1 {
+      font-size: clamp(2.6rem, 8vw, 4rem);
+      line-height: 1.05;
+      margin: 0 0 16px;
+      letter-spacing: -0.03em;
+      background: linear-gradient(100deg, #fff 30%, var(--accent) 70%, var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    h2 { font-size: 1.5rem; margin: 72px 0 20px; letter-spacing: -0.01em; }
+    h2::before {
+      counter-increment: section;
+      content: counter(section, decimal-leading-zero) ".";
+      margin-right: 10px;
+      font: 500 1rem var(--mono);
+      color: var(--accent);
+    }
+    h3 { margin: 0 0 4px; font-size: 1.1rem; font-weight: 500; }
+    p { margin: 0; }
+    a { color: var(--accent); }
+    .eyebrow { font: 0.9rem var(--mono); color: var(--accent); margin-bottom: 12px; }
+    .lead { color: var(--muted); font-size: 1.15rem; max-width: 60ch; }
+    .links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+    .links a {
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .links a:hover { border-color: var(--accent); color: var(--accent); }
+    .links a:first-child {
+      background: linear-gradient(100deg, var(--accent), var(--accent-2));
+      border-color: transparent;
+      color: #0a0c16;
+    }
+    .links a:first-child:hover { color: #0a0c16; filter: brightness(1.1); }
+    .card {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      padding: 20px;
+      margin-bottom: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      backdrop-filter: blur(6px);
+    }
+    .card img { width: 56px; height: 56px; object-fit: contain; flex-shrink: 0; }
+    .card p { color: var(--muted); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 12px; }
+    .grid .card, .card.job { display: block; margin-bottom: 0; }
+    .card.job { margin-bottom: 12px; }
+    .job p + p { margin-top: 8px; }
+    .job-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; margin-bottom: 6px; }
+    .job-head span { color: var(--accent); font: 0.85rem var(--mono); }
+    .moves { display: flex; gap: 12px; }
+    .moves button {
+      flex: 1;
+      padding: 16px 0;
+      font: 2.2rem system-ui, sans-serif;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .moves button { transition: border-color 0.15s, background 0.15s, transform 0.15s; }
+    .moves button:hover { border-color: var(--accent); background: var(--card-hover); transform: translateY(-2px); }
+    #result { margin-top: 16px; font-weight: 600; min-height: 1.6em; }
+    #score { color: var(--muted); }
+    .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+    .project {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+      margin: 0;
+      color: inherit;
+      text-decoration: none;
+      transition: border-color 0.15s, transform 0.15s, background 0.15s, box-shadow 0.15s;
+    }
+    .project:hover, .project:focus-visible {
+      border-color: rgba(94, 234, 212, 0.5);
+      background: var(--card-hover);
+      box-shadow: 0 8px 32px -12px rgba(94, 234, 212, 0.35);
+      transform: translateY(-2px);
+    }
+    .project:hover .arrow, .project:focus-visible .arrow { color: var(--accent); }
+    .project.featured {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(94, 234, 212, 0.10), rgba(167, 139, 250, 0.10));
+      border-color: rgba(94, 234, 212, 0.25);
+    }
+    .project.featured h3 { font-size: 1.3rem; }
+    .project-head { display: flex; align-items: center; gap: 10px; }
+    .project-head img { width: 28px; height: 28px; border-radius: 6px; }
+    .arrow { margin-left: auto; color: var(--muted); }
+    .project p { flex: 1; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; padding: 0; list-style: none; }
+    .tags li {
+      padding: 2px 10px;
+      font: 0.75rem var(--mono);
+      color: var(--accent);
+      background: rgba(94, 234, 212, 0.08);
+      border: 1px solid rgba(94, 234, 212, 0.15);
+      border-radius: 999px;
+    }
+    @media (prefers-reduced-motion: reduce) { .project { transition: none; } .project:hover { transform: none; } }
+    footer { margin-top: 64px; color: var(--muted); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">Hi, I'm</p>
+      <h1>Roger Lamb</h1>
+      <p class="lead">Lead Software Engineer at Capital One. Full-stack engineer who loves building great mobile experiences, scaling systems, and shipping reliable software.</p>
+      <nav class="links">
+        <a href="https://github.com/eckorog2005">GitHub</a>
+        <a href="https://www.linkedin.com/profile/view?id=25751134">LinkedIn</a>
+      </nav>
+    </header>
+
+    <section>
+      <h2>Experience</h2>
+      <div class="card job">
+        <div class="job-head"><h3>Lead Software Engineer · Capital One</h3><span>2020 – Present</span></div>
+        <p>Commercial Bank: own the data layer (PostgreSQL, Neptune graph), built approval workflows with XState on Lambda, and wrote failover runbooks that cut recovery to under a minute. Driving AI-first and spec-driven development on the team.</p>
+        <p>Messaging platform: built the Messaging Preferences API, kept a ~1,500 TPS system healthy, and led multiple squads through a no-downtime move to serverless on AWS.</p>
+      </div>
+      <div class="card job">
+        <div class="job-head"><h3>Software Developer · NSWC Dahlgren</h3><span>2009 – 2020</span></div>
+        <p>Cyber tooling in Scala/Play/Akka, Hadoop and Spark malware heuristics, 3D visualization with Electron and three.js, and .NET Core/Angular microservices on OpenShift. Also did penetration testing (2014–2016) and built a secure coding course still used today.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+      <div class="projects">
+        <a class="card project featured" href="https://eckorog2005.github.io/echo-run">
+          <div class="project-head"><h3>Echo Run</h3><span class="arrow" aria-hidden="true">↗</span></div>
+          <p>Arcade game where every route you take to an orb comes back as a looping echo you must avoid. Playable in the browser.</p>
+          <ul class="tags"><li>TypeScript</li><li>Play it live</li></ul>
+        </a>
+        <a class="card project" href="https://github.com/eckorog2005/music-visualizer">
+          <div class="project-head"><h3>Music Visualizer</h3><span class="arrow" aria-hidden="true">↗</span></div>
+          <p>Real-time browser music visualizer driven by Web Audio and WebGL.</p>
+          <ul class="tags"><li>TypeScript</li><li>WebGL</li></ul>
+        </a>
+        <a class="card project" href="https://github.com/eckorog2005/nfl-tui">
+          <div class="project-head"><h3>NFL TUI</h3><span class="arrow" aria-hidden="true">↗</span></div>
+          <p>Live NFL scores in the terminal.</p>
+          <ul class="tags"><li>TypeScript</li><li>Ink</li></ul>
+        </a>
+        <a class="card project" href="https://github.com/eckorog2005/claude-sports-ticker">
+          <div class="project-head"><h3>Claude Sports Ticker</h3><span class="arrow" aria-hidden="true">↗</span></div>
+          <p>Live sports scores in a ticker above the Claude Code prompt.</p>
+          <ul class="tags"><li>TypeScript</li><li>Claude Code</li></ul>
+        </a>
+        <a class="card project" href="https://github.com/eckorog2005/sudroid">
+          <div class="project-head"><img src="images/sudroid.png" alt=""><h3>Sudroid</h3><span class="arrow" aria-hidden="true">↗</span></div>
+          <p>My first Android app: a classic touch-screen Sudoku game.</p>
+          <ul class="tags"><li>Kotlin</li><li>Android</li></ul>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Skills</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Languages</h3>
+          <p>Java, TypeScript, JavaScript, Python, Scala, C#, C++, PHP, HTML/CSS</p>
+        </div>
+        <div class="card">
+          <h3>Data</h3>
+          <p>PostgreSQL, Neptune, MySQL, SQL Server, SQLite, Elastic, MongoDB, Redis</p>
+        </div>
+        <div class="card">
+          <h3>Platforms</h3>
+          <p>AWS (serverless), Jenkins, Azure DevOps, Red Hat OpenShift, Electron, Git</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Education &amp; Certifications</h2>
+      <div class="card job">
+        <p><strong>MS Computer Science</strong>, Virginia Commonwealth University</p>
+        <p><strong>BS Computer Science</strong>, University of Mary Washington</p>
+        <p>AWS Certified Developer – Associate · CompTIA Security+</p>
+        <p>Publication: <a href="https://ieeexplore.ieee.org/document/5171364">Non-intrusive Techniques for Enhancing Decentralized Data Storage with Strategic GIS Visualization</a> (IEEE)</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>A quick game to thank you for your time</h2>
+      <p>Rock, paper, scissors. Pick one:</p>
+      <div class="moves">
+        <button data-move="rock" aria-label="Rock">✊</button>
+        <button data-move="paper" aria-label="Paper">✋</button>
+        <button data-move="scissors" aria-label="Scissors">✌️</button>
+      </div>
+      <p id="result" aria-live="polite"></p>
+      <p id="score"></p>
+    </section>
+
+    <footer>&copy; Roger Lamb</footer>
+  </main>
+
+  <script>
+    const BEATS = { rock: 'scissors', paper: 'rock', scissors: 'paper' };
+    const ICONS = { rock: '✊', paper: '✋', scissors: '✌️' };
+    const resultEl = document.getElementById('result');
+    const scoreEl = document.getElementById('score');
+    const score = { win: 0, lose: 0, tie: 0 };
+
+    const outcome = (me, them) => me === them ? 'tie' : BEATS[me] === them ? 'win' : 'lose';
+
+    document.querySelectorAll('[data-move]').forEach(btn => btn.addEventListener('click', () => {
+      const me = btn.dataset.move;
+      const them = Object.keys(BEATS)[Math.floor(Math.random() * 3)];
+      const r = outcome(me, them);
+      score[r]++;
+      resultEl.textContent = `${ICONS[me]} vs ${ICONS[them]} ${{ win: 'You win!', lose: 'You lose!', tie: 'Tie!' }[r]}`;
+      scoreEl.textContent = `Wins ${score.win} · Losses ${score.lose} · Ties ${score.tie}`;
+    }));
+  </script>
+</body>
+</html>
